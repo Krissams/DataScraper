@@ -1,0 +1,41 @@
+Login to https://68.183.131.151:80/
+Use password provided by the systems admin
+Open two terminal, first terminal will be python navigation, second terminal will be vpn
+
+
+HOW TO RUN THE SCRIPT
+1) Edit yelp.py
+2) type runYELP
+3) close VPN
+4) visit -> http://68.183.131.151:85?report=yelp to download
+
+1) Edit localsaver.py
+2) type runLOCALSAVER
+3) close VPN
+4) visit -> http://68.183.131.151:85?report=localsaver to download
+
+1) Edit groupon.py
+2) type runGROUPON
+3) close VPN
+4) visit -> http://68.183.131.151:85?report=groupon to download
+
+
+HOW TO CONNECT TO VPN
+> viewVPN
+> openvpn 'VPN CONF'
+
+> nano /etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+
+List of short command
+viewVPN = open list of vpn
+viewIP = view current public IP will return error if no nameserver set 
+viewTM = open tmux navigation
+viewVS = run VScode on port 80
+runYELP = run script
+runLOCALSAVER = run script
+runGROUPON = run script
+
+
+
