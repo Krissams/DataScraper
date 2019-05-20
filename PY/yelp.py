@@ -1,29 +1,37 @@
 import scrapy
-
+import time
 class BlogSpider(scrapy.Spider):
     name = 'blogspider'
-    start_urls = ['https://www.yelp.com/search?cflt=restaurants&find_loc=San+Francisco%2C+CA']
+
+    # CONFIGURE HERE
+    start_urls = ['https://www.yelp.com/search?find_desc=Restaurants&find_loc=Manila%2C+Metro+Manila%2C+Philippines&ns=1']
+    allResult = False # True or False
+    waitTime = 10 #seconds
+    # CONFIGURE HERE
+
+    #RUN 
+    # scrapy runspider /root/docker-LEMP/public/DataScraper/PY/yelp.py -o /root/docker-LEMP/public/DataScraper/PY/reports/yelp.csv
+    # runYELP
+
+    #DOWNLOAD
+    # Close VPN connection
+    # Visit http://68.183.131.151:85?report=yelp
 
 
-    title ="test"
-    href = "test"
+
     def parse(self, response):
         for business_page in response.css('ul>li'):
             if  business_page.css('h3>a::text').get():
                 BlogSpider.title = business_page.css('h3>a::text').get() 
                 BlogSpider.href = 'https://www.yelp.com' + business_page.css('h3>a::attr(href)').get().strip()
                 yield response.follow(business_page.css('h3>a::attr(href)').get().strip(),  callback=self.parse_info)
-                # yield {
-                #     'title': business_page.css('h3>a::text').get(),
-                #     'link': 'https://www.yelp.com' + business_page.css('h3>a::attr(href)').get().strip()
-                # }
+                time.sleep(BlogSpider.waitTime)
 
+        if allResult is True:      
+            time.sleep(BlogSpider.waitTime)
+            for next_page in response.css('a.next-link'):
+                yield response.follow(next_page, self.parse)  
 
-
-            # yield response.follow(business_page,  callback=self.parse_info)
-            
-            
-        
     def parse_info(self, response):
         yield {
             'title': response.css(".biz-page-title::text").extract_first(),
@@ -34,12 +42,5 @@ class BlogSpider(scrapy.Spider):
         }
 
 
-
-
-
-        # for next_page in response.css('a.pages_arrow'):
-        #     yield response.follow(next_page, self.parse)
-
-        # scrapy runspider yelp.py -o reports/test.csv
 
         
