@@ -22,12 +22,10 @@ class BlogSpider(scrapy.Spider):
     def parse(self, response):
         for business_page in response.css('ul>li'):
             if  business_page.css('h3>a::text').get():
-                BlogSpider.title = business_page.css('h3>a::text').get() 
-                BlogSpider.href = 'https://www.yelp.com' + business_page.css('h3>a::attr(href)').get().strip()
                 yield response.follow(business_page.css('h3>a::attr(href)').get().strip(),  callback=self.parse_info)
                 time.sleep(BlogSpider.waitTime)
 
-        if allResult is True:      
+        if BlogSpider.allResult is True:      
             time.sleep(BlogSpider.waitTime)
             for next_page in response.css('a.next-link'):
                 yield response.follow(next_page, self.parse)  
